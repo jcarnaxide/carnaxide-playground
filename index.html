@@ -90,6 +90,29 @@
       display: block;
     }
 
+    /* ── Fullscreen Button ── */
+    .fullscreen-btn {
+      position: absolute;
+      bottom: 0.6rem;
+      right: 0.6rem;
+      z-index: 10;
+      background: rgba(13, 15, 20, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--muted);
+      cursor: pointer;
+      padding: 0.35rem 0.5rem;
+      line-height: 1;
+      font-size: 0.85rem;
+      backdrop-filter: blur(4px);
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .fullscreen-btn:hover {
+      color: var(--accent);
+      border-color: var(--accent-dim);
+    }
+
     /* ── Patch Notes ── */
     .patch-notes {
       width: 100%;
@@ -234,13 +257,15 @@
     <div class="tag">Early Demo — v0.3</div>
   </header>
 
-  <main class="game-wrapper">
+  <main class="game-wrapper" id="game-wrapper">
     <iframe
+      id="game-frame"
       src="game/index.html"
       title="Powder Game 3D"
       allowfullscreen
-      allow="autoplay"
+      allow="autoplay; fullscreen"
     ></iframe>
+    <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
   </main>
 
   <section class="patch-notes">
@@ -248,9 +273,9 @@
     <div class="patch-list">
 
       <div class="patch-entry">
-        <div class="patch-version">v0.3</div>
+        <div class="patch-version">v0.4</div>
         <ul class="patch-changes">
-          <li>Added Bomb material — explodes on hard impact and launches nearby particles outward</li>
+          <li>Added Fullscreen</li>
         </ul>
       </div>
 
@@ -259,6 +284,13 @@
       </button>
 
       <div class="patch-history" id="patch-history">
+
+        <div class="patch-entry">
+          <div class="patch-version">v0.3</div>
+          <ul class="patch-changes">
+            <li>Added Bomb material — explodes on hard impact and launches nearby particles outward</li>
+          </ul>
+        </div>
 
         <div class="patch-entry">
           <div class="patch-version">v0.2</div>
@@ -289,6 +321,15 @@
       const history = document.getElementById('patch-history');
       const open = history.classList.toggle('open');
       btn.setAttribute('aria-expanded', open);
+    }
+
+    function toggleFullscreen() {
+      const el = document.getElementById('game-wrapper');
+      if (!document.fullscreenElement) {
+        el.requestFullscreen().catch(err => console.warn('Fullscreen error:', err));
+      } else {
+        document.exitFullscreen();
+      }
     }
   </script>
 
