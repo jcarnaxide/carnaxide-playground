@@ -90,6 +90,104 @@
       display: block;
     }
 
+    /* ── Patch Notes ── */
+    .patch-notes {
+      width: 100%;
+      max-width: var(--game-w);
+    }
+
+    .patch-notes h2 {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .patch-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .patch-entry {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.5rem 1rem;
+      align-items: start;
+    }
+
+    .patch-version {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      white-space: nowrap;
+      padding-top: 0.1rem;
+    }
+
+    .patch-changes {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .patch-changes li {
+      font-size: 0.85rem;
+      color: var(--text);
+      padding-left: 0.85rem;
+      position: relative;
+    }
+
+    .patch-changes li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent-dim);
+      font-family: 'Space Mono', monospace;
+    }
+
+    /* ── Patch History Toggle ── */
+    .patch-history-toggle {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0 0;
+      color: var(--muted);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .patch-history-toggle:hover { color: var(--accent); }
+
+    .patch-history-toggle .chevron {
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .patch-history-toggle[aria-expanded="true"] .chevron {
+      transform: rotate(180deg);
+    }
+
+    .patch-history {
+      display: none;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-top: 0.5rem;
+    }
+
+    .patch-history.open { display: flex; }
+
     /* ── Footer ── */
     footer {
       width: 100%;
@@ -121,6 +219,7 @@
     @media (max-width: 720px) {
       .tag { display: none; }
       footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+      .patch-entry { grid-template-columns: 1fr; gap: 0.25rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -132,7 +231,7 @@
 
   <header>
     <div class="logo"><span>Carnaxide</span> Games</div>
-    <div class="tag">Early Demo — v0.2</div>
+    <div class="tag">Early Demo — v0.3</div>
   </header>
 
   <main class="game-wrapper">
@@ -144,10 +243,54 @@
     ></iframe>
   </main>
 
+  <section class="patch-notes">
+    <h2>Patch Notes</h2>
+    <div class="patch-list">
+
+      <div class="patch-entry">
+        <div class="patch-version">v0.3</div>
+        <ul class="patch-changes">
+          <li>Added Bomb material — explodes on hard impact and launches nearby particles outward</li>
+        </ul>
+      </div>
+
+      <button class="patch-history-toggle" aria-expanded="false" onclick="toggleHistory(this)">
+        <span class="chevron">▼</span> Previous versions
+      </button>
+
+      <div class="patch-history" id="patch-history">
+
+        <div class="patch-entry">
+          <div class="patch-version">v0.2</div>
+          <ul class="patch-changes">
+            <li>Major performance upgrage using multi mesh instance 3D</li>
+          </ul>
+        </div>
+
+        <div class="patch-entry">
+          <div class="patch-version">v0.1</div>
+          <ul class="patch-changes">
+            <li>Initial early demo release</li>
+          </ul>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <footer>
     <p>© 2026 Carnaxide Games LLC</p>
     <a href="https://www.youtube.com/@CarnaxideGames" target="_blank" rel="noopener">YouTube → Carnaxide Games</a>
   </footer>
+
+  <script>
+    function toggleHistory(btn) {
+      const history = document.getElementById('patch-history');
+      const open = history.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+    }
+  </script>
 
 </body>
 </html>
