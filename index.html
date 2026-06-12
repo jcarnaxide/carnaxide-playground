@@ -19,11 +19,10 @@
       --text:      #e2e6f0;
       --muted:     #5a6075;
       --game-w:    1152px;
-      --game-h:    648px;
+      --header-h:  2.75rem;
     }
 
-    html, body {
-      height: 100%;
+    html {
       background: var(--bg);
       color: var(--text);
       font-family: 'Space Grotesk', sans-serif;
@@ -35,7 +34,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 2rem 1rem 3rem;
+      padding: 0 1rem 3rem;
       gap: 1.25rem;
     }
 
@@ -43,11 +42,12 @@
     header {
       width: 100%;
       max-width: var(--game-w);
+      height: var(--header-h);
       display: flex;
-      align-items: baseline;
+      align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid var(--border);
-      padding-bottom: 0.75rem;
+      flex-shrink: 0;
     }
 
     .logo {
@@ -58,9 +58,7 @@
       color: var(--muted);
     }
 
-    .logo span {
-      color: var(--accent);
-    }
+    .logo span { color: var(--accent); }
 
     .tag {
       font-family: 'Space Mono', monospace;
@@ -75,7 +73,7 @@
       position: relative;
       width: 100%;
       max-width: var(--game-w);
-      aspect-ratio: 16 / 9;
+      height: calc(100vh - var(--header-h) - 1.25rem);
       background: #000;
       border: 1px solid var(--border);
       border-radius: 4px;
@@ -111,6 +109,54 @@
     .fullscreen-btn:hover {
       color: var(--accent);
       border-color: var(--accent-dim);
+    }
+
+    /* ── Controls ── */
+    .controls {
+      width: 100%;
+      max-width: var(--game-w);
+    }
+
+    .controls h2 {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .control-entry {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.75rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .control-key {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--accent);
+      background: rgba(91, 140, 255, 0.08);
+      border: 1px solid var(--accent-dim);
+      border-radius: 3px;
+      padding: 0.25rem 0.5rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .control-desc {
+      font-size: 0.85rem;
+      color: var(--text);
     }
 
     /* ── Patch Notes ── */
@@ -254,7 +300,7 @@
 
   <header>
     <div class="logo"><span>Carnaxide</span> Games</div>
-    <div class="tag">Early Demo — v0.3</div>
+    <div class="tag">Early Demo</div>
   </header>
 
   <main class="game-wrapper" id="game-wrapper">
@@ -268,9 +314,38 @@
     <button class="fullscreen-btn" onclick="toggleFullscreen()" title="Fullscreen">⛶</button>
   </main>
 
+  <section class="controls">
+    <h2>Controls</h2>
+    <div class="controls-grid">
+      <div class="control-entry">
+        <div class="control-key">Left Click</div>
+        <div class="control-desc">Spawn particle</div>
+      </div>
+      <div class="control-entry">
+        <div class="control-key">Scroll Up</div>
+        <div class="control-desc">Raise spawn height</div>
+      </div>
+      <div class="control-entry">
+        <div class="control-key">Scroll Down</div>
+        <div class="control-desc">Lower spawn height</div>
+      </div>
+    </div>
+  </section>
+
   <section class="patch-notes">
     <h2>Patch Notes</h2>
     <div class="patch-list">
+
+      <div class="patch-entry">
+        <div class="patch-version">v0.8</div>
+        <ul class="patch-changes">
+          <li>Patched a bug with interactions, and added new controls for raise/lower spawn height</li>
+        </ul>
+      </div>
+
+      <button class="patch-history-toggle" aria-expanded="false" onclick="toggleHistory(this)">
+        <span class="chevron">▼</span> Previous versions
+      </button>
 
       <div class="patch-entry">
         <div class="patch-version">v0.7</div>
@@ -278,10 +353,6 @@
           <li>Added new particle (Fire), still working on existing interactions</li>
         </ul>
       </div>
-
-      <button class="patch-history-toggle" aria-expanded="false" onclick="toggleHistory(this)">
-        <span class="chevron">▼</span> Previous versions
-      </button>
 
       <div class="patch-history" id="patch-history">
 
@@ -316,7 +387,7 @@
         <div class="patch-entry">
           <div class="patch-version">v0.2</div>
           <ul class="patch-changes">
-            <li>Major performance upgrage using multi mesh instance 3D</li>
+            <li>Major performance upgrade using multi mesh instance 3D</li>
           </ul>
         </div>
 
